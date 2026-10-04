@@ -27,3 +27,5 @@ slightly later. The paper and lettering fade gently back to darkness together.
 Reference visuals: `references/space-vinimlo.png` and the user-supplied Jonah
 Lawrence screenshot. The final preview renders actual editable SVG assets,
 not a generated raster mockup.
+
+Spacing revision: compact header, closer lab text lines, smaller galaxy canvas, and reduced slogan padding. Typography sizes and animation timing are preserved.

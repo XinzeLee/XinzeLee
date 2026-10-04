@@ -65,3 +65,5 @@ preview, while the production profile retains scalable SVG rendering.
 All 28 self-contained SVG integrity checks still pass. The diagonal reveal,
 unchanged lettering sizes, cool palette, paper texture, and light/dark endpoints
 match the user's selected direction. No additional profile content was added.
+
+Compact spacing revision: desktop SVG sections reduced from 738 to 614 px total; mobile from 1012 to 880 px. Text sizes are preserved. Desktop and mobile browser captures were checked; all 28 SVG integrity checks passed. Preview frame height now tracks layout changes to avoid clipping.

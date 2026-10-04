@@ -56,7 +56,7 @@ def lettering(kind, size, baseline, center=None, x=None):
 
 def header(theme, mobile):
     t = THEMES[theme]
-    width, height = (390, 178) if mobile else (850, 160)
+    width, height = (390, 142) if mobile else (850, 126)
     center = width / 2
     roles = ("Researcher", "Educator", "Engineer")
     # Each word types in, stays readable, then erases; no external typing service.
@@ -77,19 +77,19 @@ def header(theme, mobile):
                       '33.3333%,100%{width:0}')
         style.append(f'.word-{index}{{animation:word-{index} 9s steps({len(role)},end) infinite}}'
                      f'@keyframes word-{index}{{{frames}}}')
-        defs.append(f'<clipPath id="role-{index}"><rect class="word-{index}" x="{left:.2f}" y="73" width="0" height="33"/></clipPath>')
-        animated.append(text(center, 98, role, font_size, t["accent"], family=MONO, anchor="middle",
+        defs.append(f'<clipPath id="role-{index}"><rect class="word-{index}" x="{left:.2f}" y="53" width="0" height="33"/></clipPath>')
+        animated.append(text(center, 78, role, font_size, t["accent"], family=MONO, anchor="middle",
                              extra=f'clip-path="url(#role-{index})"'))
     style.append('.static-role{display:none}@media(prefers-reduced-motion:reduce){.moving-role{display:none}.static-role{display:block}}')
-    body = text(center, 49, "Xinze Li", 31 if mobile else 36, t["ink"], family=MONO, anchor="middle")
+    body = text(center, 37, "Xinze Li", 31 if mobile else 36, t["ink"], family=MONO, anchor="middle")
     body += '<g class="moving-role">' + "".join(animated) + '</g>'
-    body += text(center, 98, "Researcher · Educator · Engineer", 14 if mobile else 20, t["accent"], family=MONO,
+    body += text(center, 78, "Researcher · Educator · Engineer", 14 if mobile else 20, t["accent"], family=MONO,
                  anchor="middle", extra='class="static-role"')
     if mobile:
-        body += text(center, 134, "AI for Power Electronics", 15, t["mute"], anchor="middle")
-        body += text(center, 158, "and Semiconductor Fabrication", 15, t["mute"], anchor="middle")
+        body += text(center, 108, "AI for Power Electronics", 15, t["mute"], anchor="middle")
+        body += text(center, 130, "and Semiconductor Fabrication", 15, t["mute"], anchor="middle")
     else:
-        body += text(center, 139, "AI for Power Electronics and Semiconductor Fabrication", 17, t["mute"], anchor="middle")
+        body += text(center, 112, "AI for Power Electronics and Semiconductor Fabrication", 17, t["mute"], anchor="middle")
     return svg(width, height, body, "Xinze Li — Researcher, Educator, Engineer",
                '<style>' + "".join(style) + '</style>' + "".join(defs),
                "Researcher, Educator, Engineer in AI for Power Electronics and Semiconductor Fabrication")
@@ -146,33 +146,30 @@ def galaxy_source(theme):
 
 def lab(theme, mobile):
     t = THEMES[theme]
-    width, height = (390, 590) if mobile else (850, 382)
-    x = 25 if mobile else 32
-    y = 58 if mobile else 125
+    width, height = (390, 542) if mobile else (850, 310)
+    x = 36 if mobile else 72
+    y = 43 if mobile else 100
     body = text(x, y, "ASTRA Lab", 33 if mobile else 39, t["ink"], family=SERIF)
-    body += f'<path d="M{x} {y + 22}h38" stroke="{t["accent"]}" stroke-width="1.5"/>'
+    body += f'<path d="M{x} {y + 16}h38" stroke="{t["accent"]}" stroke-width="1.5"/>'
     # Mark exactly the five acronym letters, keeping the user's capitalization.
     mark = lambda letter: f'<tspan fill="{t["accent"]}" text-decoration="underline">{letter}</tspan>'
     lines = [f'Next-generation {mark("A")}I for', f'{mark("S")}emiconductors and',
              f'power elec{mark("T")}ronics -', f'{mark("R")}esearch and {mark("A")}dvancements']
     for index, line in enumerate(lines):
-        body += (f'<text x="{x}" y="{y + 57 + 28 * index}" font-size="{17 if mobile else 18}" '
+        body += (f'<text x="{x}" y="{y + 45 + 24 * index}" font-size="{17 if mobile else 18}" '
                  f'fill="{t["mute"]}" font-family="{SERIF}">{line}</text>')
     galaxy = galaxy_source(theme)
-    galaxy.set("x", "0" if mobile else "443")
-    galaxy.set("y", "219" if mobile else "2")
-    galaxy.set("width", "390" if mobile else "370")
-    galaxy.set("height", "399" if mobile else "379")
-    if mobile:
-        # The visual content needs 399 px; preserve the full outer spiral on mobile.
-        height = 622
+    galaxy.set("x", "20" if mobile else "472")
+    galaxy.set("y", "180" if mobile else "0")
+    galaxy.set("width", "350" if mobile else "300")
+    galaxy.set("height", "358" if mobile else "307")
     body += ET.tostring(galaxy, encoding="unicode")
     return svg(width, height, body, "ASTRA Lab — animated spiral galaxy",
                desc="ASTRA Lab: Next-generation AI for Semiconductors and power elecTronics - Research and Advancements. Decorative, label-free animated spiral galaxy adapted from Vinícius Melo.")
 
 
 def slogan(mobile):
-    width, height = (390, 164) if mobile else (850, 148)
+    width, height = (390, 148) if mobile else (850, 128)
     center = width / 2
     # 18-second loop: 0-4 moonlight reveal, 4-12 reading, 12-16 dusk, 16-18 night.
     style = f'''
@@ -223,16 +220,16 @@ def slogan(mobile):
     body += f'<rect width="{width}" height="{height}" filter="url(#paper-grain)"/>'
     body += '<g class="motto">'
     if mobile:
-        body += '<g class="chinese-reveal">' + lettering("chinese", 46, 72, center=center) + '</g>'
-        body += '<g class="english-reveal">' + lettering("english", 21, 116, center=center) + '</g>'
+        body += '<g class="chinese-reveal">' + lettering("chinese", 46, 65, center=center) + '</g>'
+        body += '<g class="english-reveal">' + lettering("english", 21, 105, center=center) + '</g>'
     else:
         outlines = json.loads((ROOT / "assets" / "lettering.json").read_text(encoding="utf-8-sig"))
         chinese_width = outlines["chinese"]["width"] * .044
         english_width = outlines["english"]["width"] * .032
         left = center - (chinese_width + english_width + 28) / 2
-        body += '<g class="chinese-reveal">' + lettering("chinese", 44, 90, x=left) + '</g><g class="english-reveal">'
-        body += text(left + chinese_width + 14, 85, "-", 26, "#395978", family=SERIF, anchor="middle")
-        body += lettering("english", 32, 88, x=left + chinese_width + 28)
+        body += '<g class="chinese-reveal">' + lettering("chinese", 44, 80, x=left) + '</g><g class="english-reveal">'
+        body += text(left + chinese_width + 14, 75, "-", 26, "#395978", family=SERIF, anchor="middle")
+        body += lettering("english", 32, 78, x=left + chinese_width + 28)
         body += '</g>'
     body += '</g></g></g>'
     body += f'<g class="beam" transform="rotate(-24 {center} {height / 2})"><g class="sweep">'
