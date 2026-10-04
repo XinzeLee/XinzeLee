@@ -59,27 +59,29 @@ def header(theme, mobile):
     width, height = (390, 142) if mobile else (850, 126)
     center = width / 2
     roles = ("Researcher", "Educator", "Engineer")
-    # Each word types in, stays readable, then erases; no external typing service.
+    # Native SVG visibility avoids CSS clip geometry failures in mobile renderers.
+    # One synchronized timeline, with exactly one visible role and a safe fallback.
     style = []
-    defs = []
     animated = []
     font_size = 20 if mobile else 23
     for index, role in enumerate(roles):
-        word_width = len(role) * font_size * 0.61
-        left = center - word_width / 2
-        start = index * 100 / 3
-        end = (index + 1) * 100 / 3
-        frames = (f'0%,{start:.4f}%{{width:0}}'
-                  f'{start + 8:.4f}%,{end - 6:.4f}%{{width:{word_width:.2f}px}}'
-                  f'{end:.4f}%,100%{{width:0}}')
-        if index == 0:
-            frames = (f'0%{{width:0}}8%,27.3333%{{width:{word_width:.2f}px}}'
-                      '33.3333%,100%{width:0}')
-        style.append(f'.word-{index}{{animation:word-{index} 9s steps({len(role)},end) infinite}}'
-                     f'@keyframes word-{index}{{{frames}}}')
-        defs.append(f'<clipPath id="role-{index}"><rect class="word-{index}" x="{left:.2f}" y="53" width="0" height="33"/></clipPath>')
-        animated.append(text(center, 78, role, font_size, t["accent"], family=MONO, anchor="middle",
-                             extra=f'clip-path="url(#role-{index})"'))
+        values = ['visible' if phase == index else 'hidden' for phase in (0, 1, 2, 0)]
+        fallback = 'visible' if index == 0 else 'hidden'
+        letters = []
+        for letter_index, letter in enumerate(role):
+            # Discrete character visibility types and erases without animated clipping.
+            appear = index / 3 + .06 * (letter_index + 1) / len(role)
+            disappear = index / 3 + .30 - .045 * letter_index / len(role)
+            letters.append(f'<tspan visibility="{fallback}">{letter}'
+                           '<animate attributeName="visibility" values="hidden;visible;hidden;hidden" '
+                           f'keyTimes="0;{appear:.12f};{disappear:.12f};1" '
+                           'dur="6s" begin="0s" calcMode="discrete" repeatCount="indefinite"/></tspan>')
+        animated.append(text(center, 78, '', font_size, t["accent"], family=MONO, anchor="middle",
+                             extra=f'visibility="{fallback}"').replace('</text>',
+                             ''.join(letters) +
+                             '<animate attributeName="visibility" '
+                             f'values="{";".join(values)}" keyTimes="0;0.333333333333;0.666666666667;1" '
+                             'dur="6s" begin="0s" calcMode="discrete" repeatCount="indefinite"/></text>'))
     style.append('.static-role{display:none}@media(prefers-reduced-motion:reduce){.moving-role{display:none}.static-role{display:block}}')
     body = text(center, 37, "Xinze Li", 31 if mobile else 36, t["ink"], family=MONO, anchor="middle")
     body += '<g class="moving-role">' + "".join(animated) + '</g>'
@@ -91,7 +93,7 @@ def header(theme, mobile):
     else:
         body += text(center, 112, "AI for Power Electronics and Semiconductor Fabrication", 17, t["mute"], anchor="middle")
     return svg(width, height, body, "Xinze Li — Researcher, Educator, Engineer",
-               '<style>' + "".join(style) + '</style>' + "".join(defs),
+               '<style>' + "".join(style) + '</style>',
                "Researcher, Educator, Engineer in AI for Power Electronics and Semiconductor Fabrication")
 
 
@@ -217,7 +219,16 @@ def slogan(mobile):
         body += f'<circle cx="{width * px:.1f}" cy="{height * py:.1f}" r="{radius}"/>'
     body += '</g><g class="paper-world"><g mask="url(#moon-mask)">'
     body += f'<rect width="{width}" height="{height}" fill="url(#morning)"/>'
-    body += f'<rect width="{width}" height="{height}" filter="url(#paper-grain)"/>'
+    if mobile:
+        # Small fixed specks keep the paper feel without per-frame turbulence work.
+        body += '<g fill="#6885a1" opacity=".045">'
+        for index in range(80):
+            px = (index * 137 + 17) % width
+            py = (index * 61 + 23) % height
+            body += f'<circle cx="{px}" cy="{py}" r=".55"/>'
+        body += '</g>'
+    else:
+        body += f'<rect width="{width}" height="{height}" filter="url(#paper-grain)"/>'
     body += '<g class="motto">'
     if mobile:
         body += '<g class="chinese-reveal">' + lettering("chinese", 46, 65, center=center) + '</g>'

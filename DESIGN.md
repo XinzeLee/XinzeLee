@@ -17,7 +17,7 @@ Slogan timing: 4-second reveal, 8-second hold, 4-second dusk, 2-second night.
 Reduced-motion mode presents all three roles and the visible slogan statically.
 
 Revision: underline the A/S/T/R/A letters in the expansion in ice blue. The
-role animation completes a full cycle in 9 seconds, twice as fast as before.
+role animation completes a full cycle in 6 seconds, with one role visible at a time.
 The slogan uses larger Chinese brush calligraphy and an italic English serif,
 converted to vector outlines so the appearance is consistent across devices.
 Dawn is a broad diagonal moonlight beam traveling across fine silver-blue
@@ -29,3 +29,5 @@ Lawrence screenshot. The final preview renders actual editable SVG assets,
 not a generated raster mockup.
 
 Spacing revision: compact header, closer lab text lines, smaller galaxy canvas, and reduced slogan padding. Typography sizes and animation timing are preserved.
+
+Mobile compatibility revision: native SVG visibility switches replace animated CSS clipping. Each role types, holds, and erases in a two-second slot; individual character visibility provides the typing effect without clipping. If animation is unavailable, only Researcher remains visible. Mobile paper uses lightweight fixed grain instead of a turbulence filter. Galaxy motion and slogan timing are preserved.
