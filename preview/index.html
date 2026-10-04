@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Xinze Li — profile preview</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; color: #dce6f1; background: #080c12; font: 13px/1.5 'Segoe UI', Arial, sans-serif; }
+    .toolbar { display: flex; align-items: center; flex-wrap: wrap; justify-content: space-between; gap: 16px; max-width: 978px; margin: 26px auto 20px; padding: 0 20px; }
+    .toolbar strong { font-weight: 500; color: #aabace; }
+    .controls { display: flex; flex-wrap: wrap; gap: 6px; }
+    button { border: 1px solid #29384b; padding: 6px 12px; border-radius: 6px; background: transparent; color: #91a2b8; font: inherit; cursor: pointer; }
+    button:hover, button:focus-visible { border-color: #7aadd6; color: #dcecff; }
+    button[aria-pressed="true"] { border-color: #5d89ac; background: #142338; color: #bbddfa; }
+    .stage { width: min(914px, calc(100% - 40px)); margin: 0 auto 30px; border: 1px solid #2b3543; border-radius: 10px; overflow: hidden; background: #0d1117; }
+    iframe { display: block; width: 100%; border: 0; height: 870px; }
+    .stage.mobile { max-width: 375px; }
+    .note { text-align: center; color: #6c7d93; margin: 0 20px 28px; }
+    @media(max-width:600px) { .toolbar { align-items: flex-start; } .stage { width: calc(100% - 24px); } }
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <strong>Xinze Li / README.md · local preview</strong>
+    <div class="controls" aria-label="Preview controls">
+      <button data-theme="dark" aria-pressed="true">Dark</button>
+      <button data-theme="light" aria-pressed="false">Light</button>
+      <button id="mobile" aria-pressed="false">Mobile</button>
+      <button data-scene="live" aria-pressed="true">Live animation</button>
+      <button data-scene="moonlight" aria-pressed="false">Moonlight</button>
+      <button data-scene="dawn" aria-pressed="false">Dawn</button>
+      <button data-scene="night" aria-pressed="false">Night</button>
+    </div>
+  </div>
+  <main class="stage"><iframe title="Rendered GitHub profile README" src="frame.html?theme=dark&scene=live"></iframe></main>
+  <p class="note">The profile below uses the real SVG assets. Controls are for preview only.</p>
+  <script>
+    let theme = 'dark', scene = 'live', mobile = false;
+    const stage = document.querySelector('.stage');
+    const frame = document.querySelector('iframe');
+    function update() {
+      stage.classList.toggle('mobile', mobile);
+      frame.src = `frame.html?theme=${theme}&scene=${scene}`;
+      document.querySelectorAll('[data-theme]').forEach(b => b.setAttribute('aria-pressed', b.dataset.theme === theme));
+      document.querySelectorAll('[data-scene]').forEach(b => b.setAttribute('aria-pressed', b.dataset.scene === scene));
+      document.querySelector('#mobile').setAttribute('aria-pressed', mobile);
+    }
+    document.querySelectorAll('[data-theme]').forEach(b => b.addEventListener('click', () => { theme = b.dataset.theme; update(); }));
+    document.querySelectorAll('[data-scene]').forEach(b => b.addEventListener('click', () => { scene = b.dataset.scene; update(); }));
+    document.querySelector('#mobile').addEventListener('click', () => { mobile = !mobile; update(); });
+    window.addEventListener('message', event => {
+      if (event.origin === location.origin && event.source === frame.contentWindow && event.data.height) frame.style.height = `${event.data.height}px`;
+    });
+  </script>
+</body>
+</html>

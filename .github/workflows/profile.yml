@@ -1,0 +1,36 @@
+name: Refresh profile stars
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 8 * * *'
+  push:
+    paths:
+      - 'scripts/build_profile.py'
+      - 'assets/lettering.json'
+      - 'assets/upstream/galaxy-header*.svg'
+permissions:
+  contents: write
+concurrency:
+  group: profile-generation
+  cancel-in-progress: false
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build profile assets
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python scripts/build_profile.py --refresh-stars
+      - name: Commit refreshed assets
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add README.md assets/generated assets/upstream/repositories.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'Refresh profile star count'
+            git push
+          fi

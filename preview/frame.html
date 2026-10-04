@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Xinze Li — README</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; background: #0d1117; }
+    body { padding: 26px 32px 32px; color: #e6edf3; font: 16px/1.5 'Segoe UI', Arial, sans-serif; }
+    body.light, html:has(body.light) { background: #ffffff; color: #172435; }
+    p { margin: 0 0 18px; text-align: center; }
+    p:last-of-type { margin-bottom: 0; margin-top: 14px; }
+    img { max-width: 100%; box-sizing: content-box; height: auto; vertical-align: middle; }
+    a { color: inherit; text-decoration: none; }
+    a:focus-visible { outline: 2px solid #9bcfff; outline-offset: 4px; border-radius: 4px; }
+    @media(max-width:600px) { body { padding: 18px 16px 24px; } p { margin-bottom: 20px; } }
+  </style>
+</head>
+<body>
+  <main id="readme" aria-label="Xinze Li GitHub profile"></main>
+  <script>
+    const params = new URLSearchParams(location.search);
+    const theme = params.get('theme') === 'light' ? 'light' : 'dark';
+    const scene = params.get('scene') || 'live';
+    document.body.classList.add(theme);
+    async function render() {
+      const response = await fetch('/README.md');
+      if (!response.ok) throw new Error('Could not load README');
+      document.querySelector('#readme').innerHTML = (await response.text()).replaceAll('assets/generated/', '/assets/generated/');
+      for (const picture of document.querySelectorAll('picture')) {
+        // Explicit preview theme selection, preserving the README asset and image layout.
+        const image = picture.querySelector('img');
+        const narrow = matchMedia('(max-width: 600px)').matches;
+        const name = image.getAttribute('src').split('/').pop().replace('-dark.svg', '');
+        const hasMobile = true;
+        const url = `/assets/generated/${name}-${narrow && hasMobile ? 'mobile-' : ''}${theme}.svg`;
+        picture.querySelectorAll('source').forEach(source => source.remove());
+        image.src = url;
+        if (scene !== 'live') {
+          // Freeze a review frame only. Production SVGs always retain the agreed animations.
+          const source = await (await fetch(url)).text();
+          const assetWidth = Number(source.match(/width="(\d+)"/)[1]);
+          let style = '.moving-role{display:none!important}.static-role{display:block!important}';
+          if (name === 'lab') style += 'g,path,circle,use{animation-delay:-120s!important}';
+          if (name === 'slogan') style += scene === 'dawn'
+            ? `.sweep{animation:none!important;transform:translateX(${assetWidth * 1.2}px)!important}.paper-world,.chinese-reveal,.english-reveal{animation:none!important;opacity:1!important}.night-stars,.beam{opacity:0!important;animation:none!important}`
+            : scene === 'moonlight'
+              ? `.sweep{animation:none!important;transform:translateX(${assetWidth * .43}px)!important}.paper-world,.chinese-reveal,.english-reveal{animation:none!important;opacity:1!important}.beam{animation:none!important;opacity:.8!important}.night-stars{animation:none!important;opacity:.1!important}`
+              : '.sweep{animation:none!important}.paper-world,.beam{animation:none!important;opacity:0!important}.night-stars{opacity:.45!important;animation:none!important}';
+          const frozen = source.replace('</svg>', `<style>${style}</style></svg>`);
+          image.src = URL.createObjectURL(new Blob([frozen], { type: 'image/svg+xml' }));
+        }
+      }
+      await Promise.all(Array.from(document.images).map(image => image.decode()));
+      requestAnimationFrame(() => parent.postMessage({ height: Math.ceil(document.body.getBoundingClientRect().height) }, location.origin));
+    }
+    render().catch(error => { document.body.textContent = error.message; });
+  </script>
+</body>
+</html>
