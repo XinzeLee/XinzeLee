@@ -148,7 +148,7 @@ def galaxy_source(theme):
 
 def lab(theme, mobile):
     t = THEMES[theme]
-    width, height = (390, 542) if mobile else (850, 310)
+    width, height = (390, 608) if mobile else (850, 310)
     x = 36 if mobile else 72
     y = 43 if mobile else 100
     body = text(x, y, "ASTRA Lab", 33 if mobile else 39, t["ink"], family=SERIF)
@@ -160,14 +160,19 @@ def lab(theme, mobile):
     for index, line in enumerate(lines):
         body += (f'<text x="{x}" y="{y + 45 + 24 * index}" font-size="{17 if mobile else 18}" '
                  f'fill="{t["mute"]}" font-family="{SERIF}">{line}</text>')
+    body += f'<path d="M{x} {y + 135}h38" stroke="{t["accent"]}" stroke-width="1.5"/>'
+    body += text(x, y + 160, "Ad Astra Per Aspera", 14 if mobile else 15,
+                 t["ink"], family=SERIF, extra='font-style="italic"')
+    body += text(x, y + 184, "To the Stars through Hardships", 13 if mobile else 14,
+                 t["mute"], family=SERIF)
     galaxy = galaxy_source(theme)
     galaxy.set("x", "20" if mobile else "472")
-    galaxy.set("y", "180" if mobile else "0")
+    galaxy.set("y", "246" if mobile else "0")
     galaxy.set("width", "350" if mobile else "300")
     galaxy.set("height", "358" if mobile else "307")
     body += ET.tostring(galaxy, encoding="unicode")
     return svg(width, height, body, "ASTRA Lab — animated spiral galaxy",
-               desc="ASTRA Lab: Next-generation AI for Semiconductors and power elecTronics - Research and Advancements. Decorative, label-free animated spiral galaxy adapted from Vinícius Melo.")
+               desc="ASTRA Lab: Next-generation AI for Semiconductors and power elecTronics - Research and Advancements. Ad Astra Per Aspera. To the Stars through Hardships. Decorative, label-free animated spiral galaxy adapted from Vinícius Melo.")
 
 
 def slogan(mobile):
