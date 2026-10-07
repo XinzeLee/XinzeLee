@@ -1,4 +1,4 @@
-<!-- Xinze Li profile. Local SVGs; no third-party badge or typing service. -->
+<!-- Xinze Li profile. Local SVGs; visit count is served live by the site counter. -->
 <p align="center">
   <picture>
     <source media="(max-width: 600px) and (prefers-color-scheme: light)" srcset="assets/generated/header-mobile-light.svg" />
@@ -41,6 +41,10 @@
       <img src="assets/generated/stars-dark.svg" alt="Stars" />
     </picture>
   </a>
+  <picture>
+    <source media="(prefers-color-scheme: light)" srcset="https://xinzelee-counter.xinzelee.workers.dev/profile.svg?theme=light" />
+    <img src="https://xinzelee-counter.xinzelee.workers.dev/profile.svg?theme=dark" alt="Visits" title="Profile visits" />
+  </picture>
 </p>
 
 <p align="center">

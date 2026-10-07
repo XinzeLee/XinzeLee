@@ -1,6 +1,7 @@
 """Check asset integrity and prove that removing labels preserves the galaxy."""
 from collections import Counter
 from pathlib import Path
+import json
 import re
 import xml.etree.ElementTree as ET
 
@@ -39,7 +40,12 @@ for path in files:
 
 readme = (ROOT / "README.md").read_text(encoding="utf-8")
 for asset in re.findall(r'(?:src|srcset)="([^"]+)"', readme):
+    if asset.startswith("https://xinzelee-counter.xinzelee.workers.dev/profile.svg?theme="):
+        continue
     assert (ROOT / asset).is_file(), f"README missing asset: {asset}"
+assert 'alt="Visits"' in readme
 assert "Reveal it" not in readme
+visits = json.loads((ROOT / "data" / "profile_visits.json").read_text(encoding="utf-8"))
+assert visits["base"] == 22 and visits["visits"] == visits["hits"] + 22
 print("PASS: 28 self-contained SVGs; all README assets exist; no outlined galaxy labels remain.")
 print("PASS: original particle references and all galaxy animation CSS are unchanged in both themes.")

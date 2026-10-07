@@ -1,0 +1,41 @@
+# Save the GitHub profile visit record weekly. The README badge stays live.
+name: Update profile visit record
+
+on:
+  schedule:
+    - cron: "0 12 * * 1" # Mondays 12:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: profile-visit-record
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Save profile visit count
+        env:
+          COUNTER_API_KEY: ${{ secrets.COUNTER_API_KEY }}
+        run: |
+          if [ -z "$COUNTER_API_KEY" ]; then
+            echo "Add the COUNTER_API_KEY repository secret to save visit counts."
+            exit 1
+          fi
+          mkdir -p data
+          curl -fsS --retry 3 -H "Authorization: Bearer ${COUNTER_API_KEY}" \
+            "https://xinzelee-counter.xinzelee.workers.dev/profile/stats" \
+            -o data/profile_visits.json
+      - name: Commit visit record
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/profile_visits.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'Save profile visit count'
+            git push
+          fi

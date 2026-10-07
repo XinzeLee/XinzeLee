@@ -288,6 +288,9 @@ def picture(name, alt, width=850):
   </picture>'''
 
 
+PROFILE_BADGE = "https://xinzelee-counter.xinzelee.workers.dev/profile.svg"
+
+
 def readme():
     urls = {"website": "https://xinzelee.github.io/", "scholar": "https://scholar.google.com/citations?user=YilrlZMAAAAJ",
             "linkedin": "https://www.linkedin.com/in/xinze-li-8199561b0/",
@@ -302,7 +305,11 @@ def readme():
       <img src="assets/generated/{kind}-dark.svg" alt="{'LinkedIn' if kind == 'linkedin' else kind.title()}" />
     </picture>
   </a>''')
-    return ('<!-- Xinze Li profile. Local SVGs; no third-party badge or typing service. -->\n'
+    links.append(f'''  <picture>
+    <source media="(prefers-color-scheme: light)" srcset="{PROFILE_BADGE}?theme=light" />
+    <img src="{PROFILE_BADGE}?theme=dark" alt="Visits" title="Profile visits" />
+  </picture>''')
+    return ('<!-- Xinze Li profile. Local SVGs; visit count is served live by the site counter. -->\n'
             '<p align="center">\n' + picture("header", "Xinze Li — Researcher, Educator, Engineer in AI for Power Electronics and Semiconductor Fabrication") + '\n</p>\n\n'
             '<p align="center">\n' + '\n'.join(links) + '\n</p>\n\n'
             '<p align="center">\n' + picture("lab", "ASTRA Lab: Next-generation AI for Semiconductors and power elecTronics - Research and Advancements; animated galaxy without text") + '\n</p>\n\n'
