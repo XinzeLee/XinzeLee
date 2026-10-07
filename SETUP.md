@@ -26,7 +26,7 @@ python scripts/build_profile.py --refresh-stars
 
 The first command builds offline using cached data. The second reads public
 repository counts from the GitHub API, with pagination. Once installed, the
-workflow refreshes daily at 08:17 UTC and supports manual dispatch.
+workflow refreshes weekly on Mondays at 08:17 UTC and supports manual dispatch.
 
 Total stars means stars **received** by all owned public repositories, including
 forks; it does not mean the number of repositories you have starred.

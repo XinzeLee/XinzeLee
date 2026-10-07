@@ -2,7 +2,7 @@ name: Refresh profile stars
 on:
   workflow_dispatch:
   schedule:
-    - cron: '17 8 * * *'
+    - cron: '17 8 * * 1' # Mondays 08:17 UTC
   push:
     paths:
       - 'scripts/build_profile.py'
