@@ -1,12 +1,16 @@
 {
   "ok": true,
   "base": 22,
-  "hits": 0,
-  "visits": 22,
-  "label": "22",
-  "since": null,
-  "daily": {},
-  "places": {},
-  "updated_at": null,
-  "exported_at": null
+  "hits": 14,
+  "visits": 36,
+  "label": "36",
+  "since": "2026-10-07",
+  "daily": {
+    "2026-10-07": 14
+  },
+  "places": {
+    "United States / Iowa": 14
+  },
+  "updated_at": "2026-10-07T16:06:41.000Z",
+  "exported_at": "2026-10-07T16:25:00.504Z"
 }
