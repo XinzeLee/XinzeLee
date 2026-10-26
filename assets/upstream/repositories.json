@@ -1,7 +1,7 @@
 [
   {
     "name": "AI_for_PE_Algorithm_Selector",
-    "stargazers_count": 10,
+    "stargazers_count": 11,
     "fork": false,
     "private": false
   },
@@ -19,7 +19,7 @@
   },
   {
     "name": "Fundamentals_of_AI_for_PE",
-    "stargazers_count": 30,
+    "stargazers_count": 34,
     "fork": false,
     "private": false
   },
@@ -31,13 +31,13 @@
   },
   {
     "name": "PE-GPT",
-    "stargazers_count": 68,
+    "stargazers_count": 69,
     "fork": false,
     "private": false
   },
   {
     "name": "PolygonObjectDetection",
-    "stargazers_count": 383,
+    "stargazers_count": 382,
     "fork": false,
     "private": false
   },
@@ -60,6 +60,12 @@
     "private": false
   },
   {
+    "name": "Vibe-Coding-AI-CoreLoss-Modeling",
+    "stargazers_count": 0,
+    "fork": false,
+    "private": false
+  },
+  {
     "name": "XinzeLee",
     "stargazers_count": 1,
     "fork": false,
@@ -67,7 +73,7 @@
   },
   {
     "name": "XinzeLee.github.io",
-    "stargazers_count": 1,
+    "stargazers_count": 2,
     "fork": false,
     "private": false
   }
