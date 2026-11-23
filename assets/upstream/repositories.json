@@ -1,5 +1,11 @@
 [
   {
+    "name": "AI4PE-explorer",
+    "stargazers_count": 0,
+    "fork": false,
+    "private": false
+  },
+  {
     "name": "AI_for_PE_Algorithm_Selector",
     "stargazers_count": 11,
     "fork": false,
@@ -19,7 +25,13 @@
   },
   {
     "name": "Fundamentals_of_AI_for_PE",
-    "stargazers_count": 35,
+    "stargazers_count": 37,
+    "fork": false,
+    "private": false
+  },
+  {
+    "name": "nn-playground",
+    "stargazers_count": 0,
     "fork": false,
     "private": false
   },
@@ -56,6 +68,12 @@
   {
     "name": "STAR_Metric_Adapter",
     "stargazers_count": 3,
+    "fork": false,
+    "private": false
+  },
+  {
+    "name": "traction-inverter-explorer",
+    "stargazers_count": 0,
     "fork": false,
     "private": false
   },
